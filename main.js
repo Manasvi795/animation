@@ -11,23 +11,39 @@ canvas.style.background = " #111827";
 const heart = new Image();
 heart.src = "assets/ui/heart.png";
 
-const apple = new Image();
-apple.src = "assets/fruits/Apple.png";
-
 let lives = 3;
 
+const fruitImages = [
+  "assets/fruits/Apple.png",
+  "assets/fruits/Banana.png",
+  "assets/fruits/Coconut.png",
+  "assets/fruits/Mango.png",
+  "assets/fruits/Orange.png",
+  "assets/fruits/Strawberry.png",
+];
+
+const loadFruits = fruitImages.map((src) => {
+  const fruit = new Image();
+  fruit.src = src;
+  return fruit;
+});
+
+function getRandomFruit() {
+  let ranIdx = Math.floor(Math.random() * loadFruits.length);
+  return loadFruits[ranIdx];
+}
 // let fruitX = 300;
 // let fruitY = canvas.height - 10;
 // let fruitSpeedX = 2;
 // let fruitSpeedY = -12;
 
-let gravity = 0.15;
+let gravity = 0.25;
 let fruit = {
   x: Math.random() * (canvas.width - 10),
   y: canvas.height - 10,
-  speedX: (Math.random() - 0.5) * 6,
-  speedY: -12,
-  image: apple,
+  speedX: (Math.random() - 0.5) * 8,
+  speedY: -15,
+  image: getRandomFruit(),
 };
 
 function drawLives() {
@@ -47,7 +63,8 @@ function updateFruit() {
   if (fruit.y > canvas.height) {
     fruit.x = Math.random() * (canvas.width - 10);
     fruit.y = canvas.height - 10;
-    fruit.speedY = -12;
+    fruit.speedY = -15;
+    fruit.image = getRandomFruit();
   }
 }
 
