@@ -32,19 +32,21 @@ function getRandomFruit() {
   let ranIdx = Math.floor(Math.random() * loadFruits.length);
   return loadFruits[ranIdx];
 }
-// let fruitX = 300;
-// let fruitY = canvas.height - 10;
-// let fruitSpeedX = 2;
-// let fruitSpeedY = -12;
 
 let gravity = 0.25;
-let fruit = {
-  x: Math.random() * (canvas.width - 10),
-  y: canvas.height - 10,
-  speedX: (Math.random() - 0.5) * 8,
-  speedY: -15,
-  image: getRandomFruit(),
-};
+let fruits = [];
+function createFruit() {
+  if (fruits.length >= 3) {
+    return;
+  }
+  fruits.push({
+    x: Math.random() * (canvas.width - 10),
+    y: canvas.height - 10,
+    speedX: (Math.random() - 0.5) * 8,
+    speedY: -15,
+    image: getRandomFruit(),
+  });
+}
 
 function drawLives() {
   for (let i = 0; i < lives; i++) {
@@ -53,19 +55,63 @@ function drawLives() {
 }
 
 function drawFruits() {
-  c.drawImage(fruit.image, fruit.x, fruit.y, 80, 80);
+  for (let i = fruits.length - 1; i >= 0; i--) {
+    let fruit = fruits[i];
+    c.drawImage(fruit.image, fruit.x, fruit.y, 80, 80);
+  }
 }
 
 function updateFruit() {
-  fruit.x += fruit.speedX;
-  fruit.y += fruit.speedY;
-  fruit.speedY += gravity;
-  if (fruit.y > canvas.height) {
-    fruit.x = Math.random() * (canvas.width - 10);
-    fruit.y = canvas.height - 10;
-    fruit.speedY = -15;
-    fruit.image = getRandomFruit();
+  for (let i = fruits.length - 1; i >= 0; i--) {
+    let fruit = fruits[i];
+    fruit.x += fruit.speedX;
+    fruit.y += fruit.speedY;
+    fruit.speedY += gravity;
+    if (fruit.y > canvas.height) {
+      fruit.x = Math.random() * (canvas.width - 10);
+      fruit.y = canvas.height - 10;
+      fruit.speedY = -15;
+      fruit.image = getRandomFruit();
+    }
   }
+}
+createFruit();
+setInterval(() => {
+  createFruit();
+}, 8000);
+
+let mousex = 0;
+let mousey = 0;
+let lstMousex = 0;
+let lstMousey = 0;
+let isMov = false;
+canvas.addEventListener("mousemove", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  lstMousex = mousex;
+  lstMousey = mousey;
+  mousex = e.clientX - rect.left;
+  mousey = e.clientY - rect.top;
+  isMov = true;
+});
+function drawPointer() {
+  c.beginPath();
+  c.arc(mousex, mousey, 10, 0, Math.PI * 2);
+  c.strokeStyle = "white";
+  c.lineWidth = 2;
+  c.stroke();
+}
+function drawTrail() {
+  if (!isMov) {
+    return;
+  }
+  c.beginPath();
+  c.moveTo(lstMousex, lstMousey);
+  c.lineTo(mousex, mousey);
+  c.strokeStyle = "white";
+  c.lineWidth = 5;
+  c.lineCap = "round";
+  c.stroke();
+  isMoving = false;
 }
 
 function animate() {
@@ -73,6 +119,8 @@ function animate() {
   updateFruit();
   drawLives();
   drawFruits();
+  drawPointer();
+  drawTrail();
   requestAnimationFrame(animate);
 }
 
