@@ -3,3 +3,15 @@
   margin: 0;
   box-sizing: border-box;
 }
+.scoreboard {
+  position: fixed;
+  top: 10px;
+  left: 50px;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 10;
+}
+#score {
+  margin: 5px;
+}
