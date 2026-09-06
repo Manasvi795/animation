@@ -182,4 +182,4 @@ function startGame() {
 cardButton.addEventListener("click", () => {
   startGame();
 });
-showGameCard("FRUIT SLICER", "Pop the fruits", "START GAME");
+showGameCard("FRUIT POPPER", "Pop the fruits", "START GAME");
