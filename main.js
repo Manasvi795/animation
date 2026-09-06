@@ -24,6 +24,12 @@ let gameOver = false;
 let score = 0;
 let scoreEl = document.getElementById("score");
 
+function drawLives() {
+  for (let i = 0; i < lives; i++) {
+    c.drawImage(heart, canvas.width / 2 - 30 + i * 50, 50, 40, 50);
+  }
+}
+
 const fruitImages = [
   "assets/fruits/Apple.png",
   "assets/fruits/Banana.png",
@@ -38,6 +44,13 @@ const loadFruits = fruitImages.map((src) => {
   fruit.src = src;
   return fruit;
 });
+
+function drawFruits() {
+  for (let i = fruits.length - 1; i >= 0; i--) {
+    let fruit = fruits[i];
+    c.drawImage(fruit.image, fruit.x, fruit.y, 80, 80);
+  }
+}
 
 function getRandomFruit() {
   let ranIdx = Math.floor(Math.random() * loadFruits.length);
@@ -57,19 +70,6 @@ function createFruit() {
     speedY: -15,
     image: getRandomFruit(),
   });
-}
-
-function drawLives() {
-  for (let i = 0; i < lives; i++) {
-    c.drawImage(heart, canvas.width / 2 - 30 + i * 50, 50, 40, 50);
-  }
-}
-
-function drawFruits() {
-  for (let i = fruits.length - 1; i >= 0; i--) {
-    let fruit = fruits[i];
-    c.drawImage(fruit.image, fruit.x, fruit.y, 80, 80);
-  }
 }
 
 function updateFruit() {
@@ -116,7 +116,7 @@ let mousey = 0;
 let lstMousex = 0;
 let lstMousey = 0;
 let isMov = false;
-canvas.addEventListener("mousemove", (e) => {
+canvas.addEventListener("pointermove", (e) => {
   const rect = canvas.getBoundingClientRect();
   lstMousex = mousex;
   lstMousey = mousey;
