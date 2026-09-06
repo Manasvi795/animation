@@ -87,12 +87,7 @@ function updateFruit() {
       lives--;
       if (lives <= 0) {
         gameOver = true;
-        showGameCard(
-          "GAME OVER",
-          "Your final score",
-          "PLAY AGAIN",
-          "SCORE: " + score,
-        );
+        showGameCard("GAME OVER", "PLAY AGAIN", "SCORE: " + score);
       }
     }
   }
@@ -187,8 +182,4 @@ function startGame() {
 cardButton.addEventListener("click", () => {
   startGame();
 });
-showGameCard(
-  "FRUIT SLICER",
-  "Slice the fruits and avoid the bombs!",
-  "START GAME",
-);
+showGameCard("FRUIT SLICER", "Pop the fruits", "START GAME");
