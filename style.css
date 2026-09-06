@@ -6,7 +6,7 @@
 .scoreboard {
   position: fixed;
   top: 10px;
-  left: 50px;
+  left: 50%;
   color: white;
   font-size: 24px;
   font-weight: bold;
@@ -14,4 +14,49 @@
 }
 #score {
   margin: 5px;
+}
+.game-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+}
+.game-card {
+  width: 400px;
+  padding: 40px;
+  text-align: center;
+  color: white;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+}
+.game-card h1 {
+  font-size: 42px;
+  margin-bottom: 15px;
+}
+.game-card p {
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+#finalScore {
+  font-size: 24px;
+  font-weight: bold;
+}
+.game-card button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  background: white;
+  color: #111827;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.game-card button:hover {
+  transform: scale(1.05);
 }

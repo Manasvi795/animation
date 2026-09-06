@@ -6,12 +6,23 @@ let window_width = window.innerWidth;
 
 canvas.height = window_height;
 canvas.width = window_width;
-canvas.style.background = " #111827";
+canvas.style.background = "url('assets/ui/bg.png')";
+canvas.style.backgroundSize = "cover";
+canvas.style.backgroundPosition = "center";
+
+let gameScreen = document.getElementById("gameScreen");
+let cardTitle = document.getElementById("cardTitle");
+let cardMessage = document.getElementById("cardMessage");
+let cardButton = document.getElementById("cardButton");
+let finalScore = document.getElementById("finalScore");
 
 const heart = new Image();
 heart.src = "assets/ui/heart.png";
 
 let lives = 3;
+let gameOver = false;
+let score = 0;
+let scoreEl = document.getElementById("score");
 
 const fruitImages = [
   "assets/fruits/Apple.png",
@@ -50,7 +61,7 @@ function createFruit() {
 
 function drawLives() {
   for (let i = 0; i < lives; i++) {
-    c.drawImage(heart, 30 + i * 45, 40, 50, 50);
+    c.drawImage(heart, canvas.width / 2 - 30 + i * 50, 50, 40, 50);
   }
 }
 
@@ -72,13 +83,33 @@ function updateFruit() {
       fruit.y = canvas.height - 10;
       fruit.speedY = -15;
       fruit.image = getRandomFruit();
+      fruits.splice(i, 1);
+      lives--;
+      if (lives <= 0) {
+        gameOver = true;
+        showGameCard(
+          "GAME OVER",
+          "Your final score",
+          "PLAY AGAIN",
+          "SCORE: " + score,
+        );
+      }
     }
   }
 }
 createFruit();
 setInterval(() => {
   createFruit();
-}, 8000);
+}, 1000);
+
+function showGameCard(title, message, buttonText, score = "") {
+  cardTitle.textContent = title;
+  cardMessage.textContent = message;
+  cardButton.textContent = buttonText;
+  finalScore.textContent = score;
+
+  gameScreen.style.display = "flex";
+}
 
 let mousex = 0;
 let mousey = 0;
@@ -113,10 +144,29 @@ function drawTrail() {
   c.stroke();
   isMoving = false;
 }
+function checkFruitCut() {
+  for (let i = fruits.length - 1; i >= 0; i--) {
+    let fruit = fruits[i];
+    if (
+      mousex > fruit.x &&
+      mousex < fruit.x + 80 &&
+      mousey > fruit.y &&
+      mousey < fruit.y + 80
+    ) {
+      fruits.splice(i, 1);
+      score += 10;
+      scoreEl.textContent = score;
+    }
+  }
+}
 
 function animate() {
   c.clearRect(0, 0, canvas.width, canvas.height);
+  if (gameOver) {
+    return;
+  }
   updateFruit();
+  checkFruitCut();
   drawLives();
   drawFruits();
   drawPointer();
@@ -124,4 +174,21 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
-animate();
+function startGame() {
+  gameOver = false;
+  lives = 3;
+  score = 0;
+  fruits = [];
+  scoreEl.textContent = score;
+  gameScreen.style.display = "none";
+  createFruit();
+  animate();
+}
+cardButton.addEventListener("click", () => {
+  startGame();
+});
+showGameCard(
+  "FRUIT SLICER",
+  "Slice the fruits and avoid the bombs!",
+  "START GAME",
+);
